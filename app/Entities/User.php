@@ -1,13 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Entities;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+/**
+ * Class User.
+ *
+ * @package namespace App\Entities;
+ */
+class User extends Authenticatable implements Transformable
 {
+    use TransformableTrait;
+
     use Notifiable;
 
     /**
@@ -16,7 +24,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -36,4 +46,5 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
 }

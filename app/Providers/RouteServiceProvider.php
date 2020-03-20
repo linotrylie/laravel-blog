@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $indexNamespace = 'App\Http\Controllers\Index';
+    protected $indexNamespace = 'App\Http\Controllers\Home';
     protected $adminNamespace = 'App\Http\Controllers\Admin';
     protected $commonNamespace = 'App\Http\Controllers\Common';
 
@@ -49,6 +49,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapHomeRoutes();
         //
     }
 
@@ -79,5 +80,20 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapHomeRoutes()
+    {
+        Route::prefix('home')
+            ->middleware('web')
+            ->namespace($this->indexNamespace)
+            ->group(base_path('routes/home/api.php'));
     }
 }
