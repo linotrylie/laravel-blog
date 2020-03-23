@@ -7,6 +7,7 @@ use App\Entities\User;
 use App\Presenters\UserPresenter;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\UserCreateRequest;
@@ -39,6 +40,8 @@ class UserController extends Controller
      */
     public function __construct(UserRepository $repository, UserValidator $validator)
     {
+        parent::__construct();
+        $this->middleware('guest');
         $this->repository = $repository;
         $this->validator  = $validator;
     }
@@ -50,6 +53,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->repository->pushCriteria(new UserCriteria());
         $users = $this->repository->all();
 
         if (request()->wantsJson()) {

@@ -25,10 +25,11 @@ class UserTransformer extends TransformerAbstract
             'id'         => (int) $model->id,
 
             /* place your other model properties here */
-            'name'       => $model->name,
+            'username'   => $model->username,
             'email'      => $model->email,
-            'created_at' => Carbon::parse($model->created_at)->toDateTimeString(),
-            'updated_at' => Carbon::parse($model->updated_at)->toDateTimeString()
+            'phone'      => $model->phone,
+            'created_at' => Carbon::parse($model->created_at)->toDateTime(),
+            'updated_at' => Carbon::parse($model->updated_at)->toDateTime()
         ];
     }
 }

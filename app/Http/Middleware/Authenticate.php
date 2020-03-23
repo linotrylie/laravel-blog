@@ -15,10 +15,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-//            return route('login');
-            return error(422,config('httpcode.422'));
-        }else{
-            return error(422,config('httpcode.422'));
+            return route('login');
         }
     }
 }
