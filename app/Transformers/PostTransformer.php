@@ -33,7 +33,7 @@ class PostTransformer extends TransformerAbstract
 
 
     public function list(Post $model) {
-        $model->text = mb_substr($model->text, 0,200).'......';
+        $model->text = mb_substr(strip_tags($model->text), 21,200).'......';
         $model->text = str_replace('<!--markdown-->','',$model->text);
         return [
             'id'         => (int) $model->id,
