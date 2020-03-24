@@ -178,7 +178,8 @@ return [
         App\Providers\RepositoryServiceProvider::class,
 
         Laravel\Passport\PassportServiceProvider::class,
-        \Fruitcake\Cors\CorsServiceProvider::class
+
+//        LaraMall\Markdown\Facades\Markdown::class
     ],
 
     /*

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Constants\Constant;
 use App\Entities\HomeMenu;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HomeMenuRequest;
 use App\Repositories\HomeMenuRepository;
-use Illuminate\Http\Request;
 
 class HomeMenuController extends Controller
 {
@@ -28,12 +28,20 @@ class HomeMenuController extends Controller
 
     public function index()
     {
-
-//        dd($this->homeMenuEntity::with('allHomeMenu')->where('parent_id',0)->get()->toArray());
-        $menuList = $this->homeMenuEntity::with('allHomeMenu')
-            ->where('parent_id',0)
-            ->where('status',1)
-            ->get()->toArray();
-        return success($menuList);
+        $menuKey = Constant::HOME_MENU_LIST;
+        $menuList = $this->redis->get($menuKey);
+        if(is_null($menuList)) {
+            $menuList = $this->homeMenuEntity::with('allHomeMenu')
+                ->where('parent_id',0)
+                ->where('status',1)
+                ->get()->toArray();
+            $this->redis->set($menuKey,json_encode($menuList),Constant::HOME_MENU_LIST_EXPIRED_TIME);
+        }else{
+            $menuList = json_decode($menuList,true);
+        }
+        if($this->homeMenuRequest->wantsJson()) {
+            return success($menuList);
+        }
+        return $menuList;
     }
 }

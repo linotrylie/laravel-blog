@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/user','UserController@index');
+Route::get('/posts_list','PostController@list');
 
 
 
