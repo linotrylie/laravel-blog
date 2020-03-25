@@ -17,8 +17,8 @@ return [
 
     'paths' => [
         'api/*',
-        'home/*'
-
+        'home/*',
+        '/*'
     ],
 
     'allowed_methods' => ['*'],

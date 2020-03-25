@@ -62,7 +62,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')
+        Route::middleware('api')
             ->namespace($this->commonNamespace)
             ->group(base_path('routes/web.php'));
     }
@@ -91,8 +91,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapHomeRoutes()
     {
-        Route::prefix('home')
-            ->middleware('api')
+        Route::prefix('home')->middleware('web')
             ->namespace($this->indexNamespace)
             ->group(base_path('routes/home/api.php'));
     }
