@@ -28,20 +28,10 @@ class HomeMenuController extends Controller
 
     public function index()
     {
-        $menuKey = Constant::HOME_MENU_LIST;
-        $menuList = $this->redis->get($menuKey);
-        if(is_null($menuList)) {
-            $menuList = $this->homeMenuEntity::with('allHomeMenu')
-                ->where('parent_id',0)
-                ->where('status',1)
-                ->get()->toArray();
-            $this->redis->set($menuKey,json_encode($menuList),Constant::HOME_MENU_LIST_EXPIRED_TIME);
-        }else{
-            $menuList = json_decode($menuList,true);
-        }
+        $menuList = $this->homeMenuRepository->getMenuList();
         if($this->homeMenuRequest->wantsJson()) {
             return success($menuList);
         }
-        return $menuList;
+        return redirect()->back()->with($menuList);
     }
 }

@@ -38,18 +38,19 @@ class PostController extends Controller
 
     public function info()
     {
+        $postId = $this->postRequest->input('post_id');
         try{
             $this->postValidator->with($this->postRequest->all())->passesOrFail('info');
 
             $this->postRepository->pushCriteria(new PostCriteria());
 
-            $post = $this->postRepository->find($this->postRequest->input('post_id'));
+            $post = $this->postRepository->find($postId);
 
             if(empty($post['data'])) {
                 throw new ValidatorException(new MessageBag());
             }
 
-            PostJob::dispatch($this->postRequest->input('post_id'),'views');
+            PostJob::dispatch($postId,'views');
 
             if($this->postRequest->wantsJson()){
                 return success($post['data']);
