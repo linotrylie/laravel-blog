@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Cache\RedisManage;
 use App\Constants\Constant;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -41,14 +42,16 @@ class HomeMenuRepositoryEloquent extends BaseRepository implements HomeMenuRepos
      * @return mixed
      */
     public function getMenuList() {
+        $redis = new RedisManage();
+        $homeMenuEntity = new HomeMenu();
         $menuKey = Constant::HOME_MENU_LIST;
-        $menuList = $this->redis->get($menuKey);
+        $menuList = $redis->get($menuKey);
         if(is_null($menuList) || $menuList === false) {
-            $menuList = $this->homeMenuEntity::with('allHomeMenu')
+            $menuList = $homeMenuEntity::with('allHomeMenu')
                 ->where('parent_id',0)
                 ->where('status',1)
                 ->get()->toArray();
-            $this->redis->set($menuKey,json_encode($menuList),Constant::HOME_MENU_LIST_EXPIRED_TIME);
+            $redis->set($menuKey,json_encode($menuList),Constant::HOME_MENU_LIST_EXPIRED_TIME);
         }else{
             $menuList = json_decode($menuList,true);
         }
